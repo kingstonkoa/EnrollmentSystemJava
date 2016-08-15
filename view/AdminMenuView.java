@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
@@ -68,14 +69,17 @@ public class AdminMenuView extends JPanel implements EnrollmentSystemView
               } );
                 btnEditAccount.addActionListener(new ActionListener() { 
                 @Override
-                public void actionPerformed(ActionEvent e) { 
-
+                public void actionPerformed(ActionEvent e) {
+                    if(controller.getAllStudents() != null)
+                    controller.loadEditStudentView();
+                    else
+                        JOptionPane.showMessageDialog(null,"No Student Record exist");
                 } 
               } );                
                 btnAddCourse.addActionListener(new ActionListener() { 
                 @Override
                 public void actionPerformed(ActionEvent e) { 
-
+                    controller.loadAddCourseView();
                 } 
               } );
                 btnOpenSection.addActionListener(new ActionListener() { 

@@ -127,17 +127,22 @@ public class RegisterStudentView extends JPanel implements EnrollmentSystemView
                     {
                         if(controller.IDNotExist(tfIDNumber.getText()))
                         {
-                            if(isInteger(tfMinUnits.getText()) && isInteger(tfMaxUnits.getText()))
-                            {
-                                if(Integer.parseInt(tfMinUnits.getText()) <=  Integer.parseInt(tfMaxUnits.getText()))
-                                    controller.registerStudent(new Student(tfIDNumber.getText(), tfPassword.getText(), tfLastName.getText(), tfFirstName.getText(), Integer.parseInt(tfMinUnits.getText()), Integer.parseInt(tfMaxUnits.getText())));
-                                else
+                            if(isInteger(tfIDNumber.getText()))
+                                if(isInteger(tfMinUnits.getText()) && isInteger(tfMaxUnits.getText()))
                                 {
-                                    JOptionPane.showMessageDialog(null,"Mnimum Units cannot be greater than Maximum Units");
+                                    if(Integer.parseInt(tfMinUnits.getText()) <=  Integer.parseInt(tfMaxUnits.getText()))
+                                        controller.registerStudent(new Student(tfIDNumber.getText(), tfPassword.getText(), tfLastName.getText(), tfFirstName.getText(), Integer.parseInt(tfMinUnits.getText()), Integer.parseInt(tfMaxUnits.getText())));
+                                    else
+                                    {
+                                        JOptionPane.showMessageDialog(null,"Mnimum Units cannot be greater than Maximum Units");
+                                    }
+                                } else 
+                                {
+                                    JOptionPane.showMessageDialog(null,"units should be a number");
                                 }
-                            } else 
+                            else
                             {
-                                JOptionPane.showMessageDialog(null,"units should be a number");
+                                JOptionPane.showMessageDialog(null,"Student number should only contain numbers");
                             }
                         } else
                             {

@@ -30,7 +30,9 @@ public class MainFrame extends JFrame {
         public void switchView(EnrollmentSystemView mainView) {
                 frameRevalidate();
 		this.setContentPane((JPanel) mainView);
+                this.setVisible(true);
 	}
+        
         public void frameRevalidate()
 	{
 		validate();

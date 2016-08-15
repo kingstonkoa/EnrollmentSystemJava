@@ -6,6 +6,7 @@
 package enrollmentsystem;
 
 import controller.LoginController;
+import model.Model;
 import view.MainFrame;
 
 /**
@@ -20,7 +21,8 @@ public class Main
      */
     public static void main(String[] args)
     {
-        LoginController lc = new LoginController();
+        Model model = new Model();
+        LoginController lc = new LoginController(model);
          MainFrame mf = new MainFrame();
          mf.setLoginController(lc);
          mf.renderMainView();

@@ -5,6 +5,7 @@
  */
 package controller;
 
+import model.Model;
 import view.AdminMenuView;
 import view.MainFrame;
 
@@ -15,10 +16,17 @@ import view.MainFrame;
 public class LoginController
 {
     private MainFrame mf;
+    private Model model;
 
+    public LoginController(Model model)
+    {
+        this.model = model;
+    }
+
+    
     public void loadAdminAccount()
     {
-        mf.switchView(new AdminMenuView(new AdminController(mf)));
+        mf.switchView(new AdminMenuView(new AdminController(mf, model)));
     }
 
     public void loadStudentAccount(String studentUsername)
