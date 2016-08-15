@@ -5,9 +5,12 @@
  */
 package controller;
 
+import view.AddCourseView;
 import enrollmentsystem.Course;
+import enrollmentsystem.Section;
 import enrollmentsystem.Student;
 import static enrollmentsystem.WriteToFile.WriteCourseToFile;
+import static enrollmentsystem.WriteToFile.WriteSectionToFile;
 import static enrollmentsystem.WriteToFile.WriteStudentListToFile;
 import static enrollmentsystem.WriteToFile.WriteStudentToFile;
 import java.io.File;
@@ -16,6 +19,7 @@ import model.Model;
 import view.AdminMenuView;
 import view.EditStudentView;
 import view.MainFrame;
+import view.OpenSectionView;
 import view.RegisterStudentView;
 
 /**
@@ -134,6 +138,63 @@ public class AdminController
         }
         
         return courseCodes;
+    }
+
+    public void loadOpenSectionView()
+    {
+        mf.switchView(new OpenSectionView(this));
+    }
+
+    public String[] getAddedCourses()
+    {
+        ArrayList<String> courseCodesList = new ArrayList<>();
+        model.readCourses();
+        ArrayList<Course> registeredCourses = model.getRegisteredCourses();
+        for(int i = 0; i < registeredCourses.size(); i++)
+        {
+            courseCodesList.add(registeredCourses.get(i).getCode());
+        }
+        
+        String[] courseCodeArray = new String[courseCodesList.size()];
+        courseCodeArray = courseCodesList.toArray(courseCodeArray);
+
+        return courseCodeArray;
+    }
+
+    public void openSection(Section section)
+    {
+        WriteSectionToFile("sectionsDatabase.txt", section);
+        model.readSections();
+    }
+
+    public boolean SectionNotExist(String courseCode, String section)
+    {
+        ArrayList<Section> openedSectionList = model.getOpenedSections();
+        
+        if(openedSectionList == null)
+            return true;
+        
+        ArrayList<String> sections = getSections(courseCode, openedSectionList);
+        
+        if(sections.contains(section))
+            return false;
+        else
+            return true;
+    }
+
+    public ArrayList<String> getSections(String courseCode, ArrayList<Section> openedSectionList)
+    {
+        ArrayList<String> alreadySection = new ArrayList<>();
+        for(int i = 0; i < openedSectionList.size(); i++)
+        {
+            if(openedSectionList.get(i).getCode().equals(courseCode))
+            {
+                alreadySection.add(openedSectionList.get(i).getSection());
+            }
+        
+        }
+       
+        return alreadySection;
     }
 
     

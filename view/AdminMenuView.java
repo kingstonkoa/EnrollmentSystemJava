@@ -85,7 +85,7 @@ public class AdminMenuView extends JPanel implements EnrollmentSystemView
                 btnOpenSection.addActionListener(new ActionListener() { 
                 @Override
                 public void actionPerformed(ActionEvent e) { 
-
+                    controller.loadOpenSectionView();
                 } 
               } );                
 	}
