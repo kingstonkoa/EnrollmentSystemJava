@@ -1,6 +1,7 @@
 package view;
 
 import controller.LoginController;
+import enrollmentsystem.Student;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,6 +29,8 @@ public class LoginView extends JPanel implements EnrollmentSystemView
         private String adminPassword = "DLSU";
         
         private String studentUsername;
+        private String studentPassword;
+        private Student loginedStudent;
         
         private LoginController lc;
 
@@ -102,7 +105,20 @@ public class LoginView extends JPanel implements EnrollmentSystemView
                                     else 
                                     {
                                         // validate data in student's database
-                                        lc.loadStudentAccount(studentUsername);
+                                        studentUsername = tfUsername.getText();
+                                        studentPassword = password;
+                                        if(lc.getCheckIfStudentAccountExist(studentUsername, studentPassword))
+                                        {
+                                            loginedStudent = lc.getCurrentStudent();
+                                            lc.loadStudentAccount(loginedStudent);
+                                        }
+                                        else
+                                        {
+                                            JOptionPane.showMessageDialog(null,
+							"Invalid username or password");
+                                        
+                                        }
+                                        
                                     }
 				} else
 				{

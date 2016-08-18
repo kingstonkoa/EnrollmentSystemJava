@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * @author John
  */
 
-public class ReadSectionFromFile {
+public class ReadEnlistmentFromFile {
 	
 	//Delimiter used in CSV file
 	private static final String COMMA_DELIMITER = ",";
@@ -80,7 +80,7 @@ public class ReadSectionFromFile {
 
 	}
         
-        public ArrayList<Section> getRegisteredSections()
+        public ArrayList<Section> getEnlistedSections()
         {
             return this.sections;
         }

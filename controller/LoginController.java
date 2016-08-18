@@ -5,9 +5,12 @@
  */
 package controller;
 
+import enrollmentsystem.Student;
+import java.util.ArrayList;
 import model.Model;
 import view.AdminMenuView;
 import view.MainFrame;
+import view.StudentMenuView;
 
 /**
  *
@@ -17,6 +20,7 @@ public class LoginController
 {
     private MainFrame mf;
     private Model model;
+    private Student currentStudent;
 
     public LoginController(Model model)
     {
@@ -29,14 +33,35 @@ public class LoginController
         mf.switchView(new AdminMenuView(new AdminController(mf, model)));
     }
 
-    public void loadStudentAccount(String studentUsername)
+    public void loadStudentAccount(Student loginedStudent)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        mf.switchView(new StudentMenuView(new StudentController(mf, model, loginedStudent)));
     }
 
     public void setMainFrame(MainFrame mf)
     {
         this.mf = mf;
+    }
+
+    public boolean getCheckIfStudentAccountExist(String studentUsername, String studentPassword)
+    {
+        model.readRegisteredStudents();
+        ArrayList<Student> registeredStudents = model.getRegisteredStudents();
+        boolean status = false;
+        for(int i = 0; i < registeredStudents.size(); i++ )
+        {
+            if(registeredStudents.get(i).getIdNumber().equals(studentUsername) && registeredStudents.get(i).getPassword().equals(studentPassword))
+            {
+                status = true;
+                this.currentStudent = registeredStudents.get(i);
+            }
+        }
+        return status;
+    }
+    
+    public Student getCurrentStudent()
+    {
+        return this.currentStudent;
     }
     
 }

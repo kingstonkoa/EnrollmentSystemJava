@@ -19,8 +19,9 @@ public class Section
     private String startMinute;
     private String endHour;
     private String endMinute;
+    private String enrolledCount;
 
-    public Section(String code, String section, String capacity, String day, String startHour, String startMinute, String endHour, String endMinute)
+    public Section(String code, String section, String capacity, String day, String startHour, String startMinute, String endHour, String endMinute, String enrolledCount)
     {
         this.code = code;
         this.section = section;
@@ -30,6 +31,17 @@ public class Section
         this.startMinute = startMinute;
         this.endHour = endHour;
         this.endMinute = endMinute;
+        this.enrolledCount = enrolledCount;
+    }
+
+    public String getEnrolledCount()
+    {
+        return enrolledCount;
+    }
+
+    public void setEnrolledCount(String enrolledCount)
+    {
+        this.enrolledCount = enrolledCount;
     }
 
     public String getCode()

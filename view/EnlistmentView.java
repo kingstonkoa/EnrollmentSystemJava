@@ -6,12 +6,14 @@
 package view;
 
 import controller.AdminController;
+import controller.StudentController;
 import enrollmentsystem.Course;
 import enrollmentsystem.Section;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -26,21 +28,21 @@ import view.EnrollmentSystemView;
  *
  * @author Kingston
  */
-public class OpenSectionView extends JPanel implements EnrollmentSystemView
+public class EnlistmentView extends JPanel implements EnrollmentSystemView
 {
-    private final AdminController controller;
+    private final StudentController controller;
     private Font fntPlainText, fntHeaderText;
     private JLabel openCourselbl;
     private JLabel codeLbl;
     private JLabel sectionlbl;
     private JLabel capacitylbl;
-    private JTextField sectiontf;
+    private JComboBox sectionCBox;
     private JTextField capacitytf;
-    private JButton openBtn;
+    private JButton enlistBtn;
     private JButton backBtn;
     private JComboBox courseCBox;
     private JLabel daylbl;
-    private JComboBox dayCBox;
+    private JTextField daytf;
     private JLabel startlbl;
     private JTextField startMtf;
     private JLabel colonSlbl;
@@ -49,7 +51,8 @@ public class OpenSectionView extends JPanel implements EnrollmentSystemView
     private JTextField endHtf;
     private JTextField endMtf;
     private JLabel colonElbl;
-    public OpenSectionView(AdminController controller)
+    private String[] sectionCBoxItems = {};
+    public EnlistmentView(StudentController controller)
     {
         this.controller = controller;
         setBounds(0, 0, 1000, 620);
@@ -60,11 +63,10 @@ public class OpenSectionView extends JPanel implements EnrollmentSystemView
         fntHeaderText = new Font("Arial", Font.BOLD, 40);
         
         //construct preComponents
-        String[] courseCBoxItems = controller.getAddedCourses();
-        String[] dayCBoxItems = {"Monday - Wednesday", "Tuesday - Thursday"};
+        String[] courseCBoxItems = controller.getOpenedCourses();
 
         //construct components
-        openCourselbl = new JLabel ("Open Course");
+        openCourselbl = new JLabel ("Enlist Course");
         openCourselbl.setFont(fntHeaderText);
         codeLbl = new JLabel ("Course Code");
         codeLbl.setFont(fntPlainText);
@@ -72,25 +74,72 @@ public class OpenSectionView extends JPanel implements EnrollmentSystemView
         sectionlbl.setFont(fntPlainText);
         capacitylbl = new JLabel ("Capacity");
         capacitylbl.setFont(fntPlainText);
-        sectiontf = new JTextField (3);
+        
+        sectionCBox = new JComboBox (sectionCBoxItems);
+        sectionCBox.setSelectedIndex(-1);
+        sectionCBox.addActionListener (new ActionListener () {
+        public void actionPerformed(ActionEvent e) {
+            if(sectionCBox.getSelectedIndex()!=-1)
+            capdayTime(courseCBox.getSelectedItem().toString(), sectionCBox.getSelectedItem().toString());
+        }
+
+            private void capdayTime(String courseCode, String section)
+            {
+               capacitytf.setText(controller.getCapacity(courseCode, section));
+               daytf.setText(controller.getDay(courseCode, section));
+               startHtf.setText(controller.getStartH(courseCode, section));
+               startMtf.setText(controller.getStartM(courseCode, section));
+               endHtf.setText(controller.getEndH(courseCode, section));
+               endMtf.setText(controller.getEndM(courseCode, section));
+            }
+    });
         capacitytf = new JTextField (5);
-        openBtn = new JButton ("Open");
-        openBtn.setFont(fntPlainText);
+        capacitytf.setEditable(false);
+        enlistBtn = new JButton ("Enlist");
+        enlistBtn.setFont(fntPlainText);
         backBtn = new JButton ("Back");
         backBtn.setFont(fntPlainText);
+        
         courseCBox = new JComboBox (courseCBoxItems);
+        courseCBox.setSelectedIndex(-1);
+        courseCBox.addActionListener (new ActionListener () {
+        public void actionPerformed(ActionEvent e) {
+            populateSection(courseCBox.getSelectedItem().toString());
+        }
+
+            private void populateSection(String courseCode)
+            {
+            sectionCBoxItems = controller.getOpenedSections(courseCode);
+            sectionCBox.setModel(new DefaultComboBoxModel(sectionCBoxItems));
+            sectionCBox.setSelectedIndex(-1);
+            
+            capacitytf.setText("");
+            daytf.setText("");
+            startHtf.setText("");
+            startMtf.setText("");
+            endHtf.setText("");
+            endMtf.setText("");
+          
+            }
+    });
+        
         daylbl = new JLabel ("Day Schedule");
         daylbl.setFont(fntPlainText);
-        dayCBox = new JComboBox (dayCBoxItems);
+        daytf = new JTextField (20);
+        daytf.setEditable(false);
         startlbl = new JLabel ("Start Time");
         startlbl.setFont(fntPlainText);
         startMtf = new JTextField (5);
+        startMtf.setEditable(false);
         colonSlbl = new JLabel (":");
         startHtf = new JTextField (5);
+        startHtf.setEditable(false);
         jcomp16 = new JLabel ("End Time");
         jcomp16.setFont(fntPlainText);
         endHtf = new JTextField (5);
+        endHtf.setEditable(false);
         endMtf = new JTextField (5);
+        endMtf.setEditable(false);
         colonElbl = new JLabel (":");
 
         //adjust size and set layout
@@ -102,13 +151,13 @@ public class OpenSectionView extends JPanel implements EnrollmentSystemView
         add (codeLbl);
         add (sectionlbl);
         add (capacitylbl);
-        add (sectiontf);
+        add (sectionCBox);
         add (capacitytf);
-        add (openBtn);
+        add (enlistBtn);
         add (backBtn);
         add (courseCBox);
         add (daylbl);
-        add (dayCBox);
+        add (daytf);
         add (startlbl);
         add (startMtf);
         add (colonSlbl);
@@ -123,12 +172,12 @@ public class OpenSectionView extends JPanel implements EnrollmentSystemView
         codeLbl.setBounds (370, 125, 140, 25);
         sectionlbl.setBounds (370, 170, 140, 25);
         capacitylbl.setBounds (370, 215, 140, 25);
-        sectiontf.setBounds (505, 170, 100, 25);
+        sectionCBox.setBounds (505, 170, 100, 25);
         capacitytf.setBounds (505, 215, 100, 25);
-        openBtn.setBounds (435, 440, 100, 25);
+        enlistBtn.setBounds (435, 440, 100, 25);
         courseCBox.setBounds (505, 125, 100, 25);
         daylbl.setBounds (370, 260, 140, 25);
-        dayCBox.setBounds (505, 260, 165, 30);
+        daytf.setBounds (505, 260, 165, 30);
         startlbl.setBounds (370, 305, 140, 25);
         startMtf.setBounds (560, 305, 45, 30);
         colonSlbl.setBounds (552, 305, 15, 30);
@@ -142,61 +191,46 @@ public class OpenSectionView extends JPanel implements EnrollmentSystemView
         backBtn.addActionListener(new ActionListener() { 
         @Override
         public void actionPerformed(ActionEvent e) { 
-            controller.loadAdminMenuView();
+            controller.loadStudentMenuView();
         } 
       } ); 
-        openBtn.addActionListener(new ActionListener() { 
+        enlistBtn.addActionListener(new ActionListener() { 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (!courseCBox.getSelectedItem().toString().equals("") && !sectiontf.getText().equals("") && !capacitytf.getText().equals("") && !startHtf.getText().equals("")
-                    && !startMtf.getText().equals("") && !endHtf.getText().equals("") && !endMtf.getText().equals(""))
+            if(courseCBox.getSelectedIndex() != -1 && sectionCBox.getSelectedIndex() != -1)
             {
-                if(sectiontf.getText().length() == 3)
+                String[] parts = capacitytf.getText().split("/");
+                String count = parts[0]; 
+                String capacity = parts[1]; 
+                if(Integer.parseInt(count) < Integer.parseInt(capacity))
                 {
-                    if(isUpper(sectiontf.getText()))
+                    if(controller.courseNotYetEnlisted(courseCBox.getSelectedItem().toString()))
                     {
-                    if(isInteger(capacitytf.getText()))
-                    {
-                        if(isInteger(startHtf.getText()) && isInteger(startMtf.getText()) && isInteger(endHtf.getText()) && isInteger(endMtf.getText()))
+                        if(controller.noTimeConflict(daytf.getText(), startHtf.getText(), startMtf.getText(), endHtf.getText(), endMtf.getText()))
                         {
-                            if(Integer.parseInt(startHtf.getText()) <= 24 && Integer.parseInt(endHtf.getText()) <= 24 && Integer.parseInt(startHtf.getText()) >= 0 && Integer.parseInt(endHtf.getText()) >= 0
-                                    && Integer.parseInt(startMtf.getText()) <= 59 && Integer.parseInt(endMtf.getText()) <= 59 && Integer.parseInt(startMtf.getText()) >= 0 && Integer.parseInt(endMtf.getText()) >=0)
-                            {
-                                if(controller.SectionNotExist(courseCBox.getSelectedItem().toString(),sectiontf.getText()))
-                                {
-                                    controller.openSection(new Section(courseCBox.getSelectedItem().toString(), sectiontf.getText(), capacitytf.getText(), dayCBox.getSelectedItem().toString(), startHtf.getText(), startMtf.getText(), endHtf.getText(), endMtf.getText(), "0"));
-                                } else
-                                    {
-                                      JOptionPane.showMessageDialog(null,"Section already exist for this course");  
-                                    }
-                            } else
-                                {
-                                    JOptionPane.showMessageDialog(null,"Invalid time");
-                                }
+                        controller.addEnlistment(controller.getSection(courseCBox.getSelectedItem().toString(), sectionCBox.getSelectedItem().toString()));
                         } else
                             {
-                                JOptionPane.showMessageDialog(null,"Time should be a number");
-                        
+                              JOptionPane.showMessageDialog(null,
+                        "There is conflict in class time");  
                             }
-                    
                     } else
                         {
-                            JOptionPane.showMessageDialog(null,"Capacity should be a number");
+                           JOptionPane.showMessageDialog(null,
+                        "Course with the same name has already been enlisted"); 
                         }
-                    } else
-                    {
-                      JOptionPane.showMessageDialog(null,"Characters should be uppercase");  
-                    }
-                
+                    
                 } else
                     {
-                      JOptionPane.showMessageDialog(null,"Section should be 3 characters");  
+                        JOptionPane.showMessageDialog(null,
+                        "Maximum capacity has been reached");
                     }
-            
+                
             } else
-                    {
-                        JOptionPane.showMessageDialog(null,"Please fill up all fields.");
-                    }
+                {
+                    JOptionPane.showMessageDialog(null,
+                        "Please selection a section first");
+                }
         } 
       } ); 
     }

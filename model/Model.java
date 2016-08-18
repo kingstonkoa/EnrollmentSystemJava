@@ -7,6 +7,7 @@ package model;
 
 import enrollmentsystem.Course;
 import enrollmentsystem.ReadCourseFromFile;
+import enrollmentsystem.ReadEnlistmentFromFile;
 import enrollmentsystem.ReadSectionFromFile;
 import enrollmentsystem.ReadStudentFromFile;
 import enrollmentsystem.Section;
@@ -22,9 +23,11 @@ public class Model
     private ArrayList<Student> registeredStudentsList;
     private ArrayList<Course> registeredCoursesList;
     private ArrayList<Section> openedSectionList;
+    private ArrayList<Section> enlistedSectionList;
     private ReadStudentFromFile r;
     private ReadCourseFromFile c;
     private ReadSectionFromFile s;
+    private ReadEnlistmentFromFile e;
     private final String studentRecordFileName = "studentsDatabase.txt";
     private final String courseRecordFileName = "coursesDatabase.txt";
     private final String sectionRecordFileName = "sectionsDatabase.txt";
@@ -33,6 +36,7 @@ public class Model
         r = new ReadStudentFromFile();
         c = new ReadCourseFromFile();
         s = new ReadSectionFromFile();
+        e = new ReadEnlistmentFromFile();
     }
     
     public void readRegisteredStudents()
@@ -66,6 +70,17 @@ public class Model
    public ArrayList<Section> getOpenedSections()
    {
        return this.openedSectionList;
+   }
+
+    public void readEnlisted(String filename)
+    {
+        e.readFile(filename);
+        enlistedSectionList = e.getEnlistedSections();
+    }
+    
+   public ArrayList<Section> getEnlistedSections()
+   {
+       return this.enlistedSectionList;
    }
     
 }
