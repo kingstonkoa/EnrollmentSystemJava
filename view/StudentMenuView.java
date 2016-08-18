@@ -75,7 +75,7 @@ public class StudentMenuView extends JPanel implements EnrollmentSystemView
                 btnRemoveEnlist.addActionListener(new ActionListener() { 
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                       
+                      controller.removeEnlistmentView(); 
                 } 
               } );                
                 btnEnroll.addActionListener(new ActionListener() { 

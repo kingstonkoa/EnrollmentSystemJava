@@ -17,6 +17,7 @@ import java.util.Date;
 import model.Model;
 import view.EnlistmentView;
 import view.MainFrame;
+import view.RemoveEnlistmentView;
 import view.StudentMenuView;
 
 /**
@@ -246,5 +247,16 @@ public class StudentController
         return false;
     }
 }
+
+    public void removeEnlistmentView()
+    {
+         mf.switchView(new RemoveEnlistmentView(this));
+    }
+
+    public ArrayList<Section> getEnlistSections()
+    {
+        model.readEnlisted(loginedStudent.getIdNumber()+"enlistment.txt");
+        return model.getEnlistedSections();
+    }
     
 }
