@@ -31,6 +31,7 @@ public class ReadEnlistmentFromFile {
         private static final int COURSE_ENDH_IDX = 6;
         private static final int COURSE_ENDM_IDX = 7;
         private static final int COURSE_ECNT_IDX = 8;
+        private static final int COURSE_FACULTY_IDX = 9;
         private ArrayList<Section> sections;
 	
 	public void readFile(String fileName) {
@@ -58,7 +59,7 @@ public class ReadEnlistmentFromFile {
                 String[] tokens = line.split(COMMA_DELIMITER);
                 if (tokens.length > 0) {
                 	//Create a new student object and fill his  data
-					Section section = new Section(tokens[COURSE_CODE_IDX], tokens[COURSE_SECTION_IDX], tokens[COURSE_CAPACITY_IDX], tokens[COURSE_DAY_IDX], tokens[COURSE_STARTH_IDX], tokens[COURSE_STARTM_IDX], tokens[COURSE_ENDH_IDX], tokens[COURSE_ENDM_IDX], tokens[COURSE_ECNT_IDX]);
+					Section section = new Section(tokens[COURSE_CODE_IDX], tokens[COURSE_SECTION_IDX], tokens[COURSE_CAPACITY_IDX], tokens[COURSE_DAY_IDX], tokens[COURSE_STARTH_IDX], tokens[COURSE_STARTM_IDX], tokens[COURSE_ENDH_IDX], tokens[COURSE_ENDM_IDX], tokens[COURSE_ECNT_IDX], tokens[COURSE_FACULTY_IDX]);
 					sections.add(section);
 				}
             }

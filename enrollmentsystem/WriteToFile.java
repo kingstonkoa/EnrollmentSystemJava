@@ -19,7 +19,7 @@ public class WriteToFile {
 	//CSV file header
 	private static final String FILE_HEADER_STUDENT = "studentID,password,lastName,firstName,minUnits,maxUnits";
         private static final String FILE_HEADER_COURSE = "code,name,units";
-        private static final String FILE_HEADER_SECTION = "code,section,capacity,day,startH,startM,endH,endM,enrollCount";
+        private static final String FILE_HEADER_SECTION = "code,section,capacity,day,startH,startM,endH,endM,enrollCount,faculty";
 	public static void WriteStudentToFile(String fileName, Student student) {
 		
 		FileWriter fileWriter = null;
@@ -288,6 +288,8 @@ public class WriteToFile {
                                     fileWriter.append(section.getEndMinute());
                                     fileWriter.append(COMMA_DELIMITER);
                                     fileWriter.append(section.getEnrolledCount());
+                                    fileWriter.append(COMMA_DELIMITER);
+                                    fileWriter.append(section.getFaculty());
                                     fileWriter.append(NEW_LINE_SEPARATOR);
                                     
 
@@ -345,6 +347,8 @@ public class WriteToFile {
                                     fileWriter.append(section.getEndMinute());
                                     fileWriter.append(COMMA_DELIMITER);
                                     fileWriter.append(section.getEnrolledCount());
+                                    fileWriter.append(COMMA_DELIMITER);
+                                    fileWriter.append(section.getFaculty());
                                     fileWriter.append(NEW_LINE_SEPARATOR);
 
 
@@ -370,6 +374,71 @@ public class WriteToFile {
                     }
             }
 	}
+        public static void WriteSectionListToFile(String fileName, ArrayList<Section> sectionList) {
+		
+		FileWriter fileWriter = null;
+                
+                File f = new File(fileName);
+               
+				
+                    try {
+                            fileWriter = new FileWriter(fileName);
+
+                            //Write the CSV file header
+                            fileWriter.append(FILE_HEADER_SECTION);
+
+                            //Add a new line separator after the header
+                            fileWriter.append(NEW_LINE_SEPARATOR);
+
+                            //Write a new student object list to the CSV file
+
+                            for(int i = 0; i < sectionList.size(); i++)
+                            {
+                                    fileWriter.append(sectionList.get(i).getCode());
+                                    fileWriter.append(COMMA_DELIMITER);
+                                    fileWriter.append(sectionList.get(i).getSection());
+                                    fileWriter.append(COMMA_DELIMITER);
+                                    fileWriter.append(sectionList.get(i).getCapacity());
+                                    fileWriter.append(COMMA_DELIMITER);
+                                    fileWriter.append(sectionList.get(i).getDay());
+                                    fileWriter.append(COMMA_DELIMITER);
+                                    fileWriter.append(sectionList.get(i).getStartHour());
+                                    fileWriter.append(COMMA_DELIMITER);
+                                    fileWriter.append(sectionList.get(i).getStartMinute());
+                                    fileWriter.append(COMMA_DELIMITER);
+                                    fileWriter.append(sectionList.get(i).getEndHour());
+                                    fileWriter.append(COMMA_DELIMITER);
+                                    fileWriter.append(sectionList.get(i).getEndMinute());
+                                    fileWriter.append(COMMA_DELIMITER);
+                                    fileWriter.append(sectionList.get(i).getEnrolledCount());
+                                    fileWriter.append(COMMA_DELIMITER);
+                                    fileWriter.append(sectionList.get(i).getFaculty());
+                                    fileWriter.append(NEW_LINE_SEPARATOR);
+
+                            }
+
+
+//                            JOptionPane.showMessageDialog(null,
+//							"Open Section Successfull!");
+
+                    } catch (Exception e) {
+                            JOptionPane.showMessageDialog(null,
+							"Error in incrementing enrolled count section");
+                            e.printStackTrace();
+                    } finally {
+
+                            try {
+                                    fileWriter.flush();
+                                    fileWriter.close();
+                            } catch (IOException e) {
+                                    System.out.println("Error while flushing/closing fileWriter !!!");
+                    e.printStackTrace();
+                            }
+
+                    
+            }
+	}
+
         public static void WriteStudentEnlistToFile(String fileName, Section section) {
 		
 		FileWriter fileWriter = null;
@@ -398,6 +467,8 @@ public class WriteToFile {
                                     fileWriter.append(section.getEndMinute());
                                     fileWriter.append(COMMA_DELIMITER);
                                     fileWriter.append(section.getEnrolledCount());
+                                    fileWriter.append(COMMA_DELIMITER);
+                                    fileWriter.append(section.getFaculty());
                                     fileWriter.append(NEW_LINE_SEPARATOR);
                                     
 
@@ -455,6 +526,8 @@ public class WriteToFile {
                                     fileWriter.append(section.getEndMinute());
                                     fileWriter.append(COMMA_DELIMITER);
                                     fileWriter.append(section.getEnrolledCount());
+                                    fileWriter.append(COMMA_DELIMITER);
+                                    fileWriter.append(section.getFaculty());
                                     fileWriter.append(NEW_LINE_SEPARATOR);
 
 
@@ -479,6 +552,132 @@ public class WriteToFile {
 
                     }
             }
+	}
+        
+         public static void WriteStudentEnlistListToFile(String fileName, ArrayList<Section> enlistmentList) {
+		
+		FileWriter fileWriter = null;
+                
+                File f = new File(fileName);
+				
+                    try {
+                            fileWriter = new FileWriter(fileName);
+
+                            //Write the CSV file header
+                            fileWriter.append(FILE_HEADER_SECTION);
+
+                            //Add a new line separator after the header
+                            fileWriter.append(NEW_LINE_SEPARATOR);
+
+                            //Write a new student object list to the CSV file
+                            for(int i = 0; i < enlistmentList.size(); i++)
+                            {
+                                    fileWriter.append(enlistmentList.get(i).getCode());
+                                    fileWriter.append(COMMA_DELIMITER);
+                                    fileWriter.append(enlistmentList.get(i).getSection());
+                                    fileWriter.append(COMMA_DELIMITER);
+                                    fileWriter.append(enlistmentList.get(i).getCapacity());
+                                    fileWriter.append(COMMA_DELIMITER);
+                                    fileWriter.append(enlistmentList.get(i).getDay());
+                                    fileWriter.append(COMMA_DELIMITER);
+                                    fileWriter.append(enlistmentList.get(i).getStartHour());
+                                    fileWriter.append(COMMA_DELIMITER);
+                                    fileWriter.append(enlistmentList.get(i).getStartMinute());
+                                    fileWriter.append(COMMA_DELIMITER);
+                                    fileWriter.append(enlistmentList.get(i).getEndHour());
+                                    fileWriter.append(COMMA_DELIMITER);
+                                    fileWriter.append(enlistmentList.get(i).getEndMinute());
+                                    fileWriter.append(COMMA_DELIMITER);
+                                    fileWriter.append(enlistmentList.get(i).getEnrolledCount());
+                                    fileWriter.append(COMMA_DELIMITER);
+                                    fileWriter.append(enlistmentList.get(i).getFaculty());
+                                    fileWriter.append(NEW_LINE_SEPARATOR);
+
+
+                            }
+
+                            JOptionPane.showMessageDialog(null,
+							"Remove Enlistment Successfull!");
+
+                    } catch (Exception e) {
+                            JOptionPane.showMessageDialog(null,
+							"Error in removing enlistment");
+                            e.printStackTrace();
+                    } finally {
+
+                            try {
+                                    fileWriter.flush();
+                                    fileWriter.close();
+                            } catch (IOException e) {
+                                    System.out.println("Error while flushing/closing fileWriter !!!");
+                    e.printStackTrace();
+                            }
+
+                    }
+            
+	}
+
+         public static void WriteStudentEnrollListToFile(String fileName, ArrayList<Section> enlistmentList) {
+		
+		FileWriter fileWriter = null;
+                
+                File f = new File(fileName);
+				
+                    try {
+                            fileWriter = new FileWriter(fileName);
+
+                            //Write the CSV file header
+                            fileWriter.append(FILE_HEADER_SECTION);
+
+                            //Add a new line separator after the header
+                            fileWriter.append(NEW_LINE_SEPARATOR);
+
+                            //Write a new student object list to the CSV file
+                            for(int i = 0; i < enlistmentList.size(); i++)
+                            {
+                                    fileWriter.append(enlistmentList.get(i).getCode());
+                                    fileWriter.append(COMMA_DELIMITER);
+                                    fileWriter.append(enlistmentList.get(i).getSection());
+                                    fileWriter.append(COMMA_DELIMITER);
+                                    fileWriter.append(enlistmentList.get(i).getCapacity());
+                                    fileWriter.append(COMMA_DELIMITER);
+                                    fileWriter.append(enlistmentList.get(i).getDay());
+                                    fileWriter.append(COMMA_DELIMITER);
+                                    fileWriter.append(enlistmentList.get(i).getStartHour());
+                                    fileWriter.append(COMMA_DELIMITER);
+                                    fileWriter.append(enlistmentList.get(i).getStartMinute());
+                                    fileWriter.append(COMMA_DELIMITER);
+                                    fileWriter.append(enlistmentList.get(i).getEndHour());
+                                    fileWriter.append(COMMA_DELIMITER);
+                                    fileWriter.append(enlistmentList.get(i).getEndMinute());
+                                    fileWriter.append(COMMA_DELIMITER);
+                                    fileWriter.append(enlistmentList.get(i).getEnrolledCount());
+                                    fileWriter.append(COMMA_DELIMITER);
+                                    fileWriter.append(enlistmentList.get(i).getFaculty());
+                                    fileWriter.append(NEW_LINE_SEPARATOR);
+
+
+                            }
+
+                            JOptionPane.showMessageDialog(null,
+							"Enrolled Student Successfull!");
+
+                    } catch (Exception e) {
+                            JOptionPane.showMessageDialog(null,
+							"Error in enrolling student");
+                            e.printStackTrace();
+                    } finally {
+
+                            try {
+                                    fileWriter.flush();
+                                    fileWriter.close();
+                            } catch (IOException e) {
+                                    System.out.println("Error while flushing/closing fileWriter !!!");
+                    e.printStackTrace();
+                            }
+
+                    }
+            
 	}
 }
 

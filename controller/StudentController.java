@@ -8,7 +8,11 @@ package controller;
 import enrollmentsystem.Course;
 import enrollmentsystem.Section;
 import enrollmentsystem.Student;
+import static enrollmentsystem.WriteToFile.WriteSectionListToFile;
+import static enrollmentsystem.WriteToFile.WriteStudentEnlistListToFile;
 import static enrollmentsystem.WriteToFile.WriteStudentEnlistToFile;
+import static enrollmentsystem.WriteToFile.WriteStudentEnrollListToFile;
+import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,9 +20,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import model.Model;
 import view.EnlistmentView;
+import view.EnrollStudentView;
 import view.MainFrame;
 import view.RemoveEnlistmentView;
 import view.StudentMenuView;
+import view.ViewEAFView;
 
 /**
  *
@@ -40,8 +46,11 @@ public class StudentController
 
     public boolean isNotEnrolled()
     {
-        //TODO
-        return true;
+        File f = new File(loginedStudent.getIdNumber()+"enrollment.txt");
+        if(f.exists() && !f.isDirectory())
+            return false;
+        else 
+            return true;
     }
 
     public void loadEnlistmentView()
@@ -257,6 +266,179 @@ public class StudentController
     {
         model.readEnlisted(loginedStudent.getIdNumber()+"enlistment.txt");
         return model.getEnlistedSections();
+    }
+
+    public String[] populateEnlisted(ArrayList<Section> enlistSections)
+    {
+        ArrayList<String> enlistedToList = new ArrayList<String>();
+        for(int i = 0; i < enlistSections.size(); i++)
+        {
+            String row = enlistSections.get(i).getCode() + " " + enlistSections.get(i).getSection();
+            enlistedToList.add(row);
+            
+        }
+        
+        String[] enlistedArray = new String[enlistedToList.size()];
+        enlistedArray = enlistedToList.toArray(enlistedArray);
+
+        return enlistedArray;   
+    }
+
+    public void removeEnlisted(String courseCode, String section)
+    {
+        ArrayList<Section> currentEnlisted = new ArrayList<Section>();
+        currentEnlisted = getEnlistSections();
+        
+        for(int i = 0; i < currentEnlisted.size(); i++)
+        {
+            if(currentEnlisted.get(i).getCode().equals(courseCode) && currentEnlisted.get(i).getSection().equals(section))
+                currentEnlisted.remove(i);
+        }
+        reWriteEnlistFile(currentEnlisted);
+    }
+    
+    public void reWriteEnlistFile(ArrayList<Section> updatedEnlistList)
+    {
+         File f = null;
+         f = new File(loginedStudent.getIdNumber()+"enlistment.txt");
+         f.delete();
+         
+        WriteStudentEnlistListToFile(loginedStudent.getIdNumber()+"enlistment.txt", updatedEnlistList);
+        model.readEnlisted(loginedStudent.getIdNumber()+"enlistment.txt");
+
+
+    }
+
+    public void enrollView()
+    {
+        mf.switchView(new EnrollStudentView(this));
+    }
+
+    public void enrollStudent()
+    {
+        ArrayList<Section> currentEnlisted = new ArrayList<Section>();
+        currentEnlisted = getEnlistSections();
+        
+        enrollToFile(currentEnlisted);
+    }
+
+    public void enrollToFile(ArrayList<Section> currentEnlisted)
+    {
+        File f = null;
+        f = new File(loginedStudent.getIdNumber()+"enlistment.txt");
+        f.delete();
+        
+        WriteStudentEnrollListToFile(loginedStudent.getIdNumber()+"enrollment.txt", currentEnlisted);
+        model.readEnrolled(loginedStudent.getIdNumber()+"enrollment.txt");
+        
+    }
+
+    public boolean isValidUnits()
+    {
+        int count = 0;
+        int minUnits = loginedStudent.getMinUnits();
+        int maxUnits = loginedStudent.getMaxUnits();
+        ArrayList<Section> enlistSections = getEnlistSections();
+        model.readCourses();
+        ArrayList<Course> registeredCourses = model.getRegisteredCourses();
+        
+        for(int i = 0; i < enlistSections.size(); i++)
+        {
+            for(int j = 0; j < registeredCourses.size(); j++)
+            {
+                if(enlistSections.get(i).getCode().equals(registeredCourses.get(j).getCode()))
+                    count += Integer.parseInt(registeredCourses.get(j).getUnits());
+            }
+        }
+        if(count >= minUnits && count <= maxUnits)
+            return true;
+        else
+            return false;
+    }
+
+    public void updateSectionEnrollCount()
+    {
+        int current;
+        model.readSections();
+        ArrayList<Section> openedSections = model.getOpenedSections();
+        model.readEnrolled(loginedStudent.getIdNumber()+"enrollment.txt");
+        ArrayList<Section> enrolledSections = model.getEnrolledSections();
+        
+        for(int i  = 0; i < enrolledSections.size(); i++)
+        {
+            for(int j = 0; j < openedSections.size(); j++)
+            {
+                if(enrolledSections.get(i).getCode().equals(openedSections.get(j).getCode()) && enrolledSections.get(i).getSection().equals(openedSections.get(j).getSection()))
+                {
+                    current = Integer.parseInt(openedSections.get(j).getEnrolledCount());
+                    openedSections.get(j).setEnrolledCount(String.valueOf(current++));
+                }
+            }
+        }
+        
+        reWriteSectionDatabase(openedSections);
+    }
+
+    public void reWriteSectionDatabase(ArrayList<Section> openedSections)
+    {
+        File f = null;
+        f = new File("sectionsDatabase.txt");
+        f.delete();
+         
+        WriteSectionListToFile("sectionsDatabase.txt", openedSections);
+        model.readSections();
+    }
+
+    public ArrayList<Section> getAllEnrolled()
+    {
+       model.readEnrolled(loginedStudent.getIdNumber()+"enrollment.txt");
+       ArrayList<Section> enrolledSections = model.getEnrolledSections();
+       return  enrolledSections;
+    }
+
+    public String getCourseName(String code)
+    {
+        model.readCourses();
+        ArrayList<Course> registeredCourses = model.getRegisteredCourses();
+        
+        for(int i = 0; i < registeredCourses.size(); i++)
+        {
+            if(registeredCourses.get(i).getCode().equals(code))
+              return  registeredCourses.get(i).getName();
+        }
+        return null;
+        
+    }
+
+    public String getUnits(String code)
+    {
+        model.readCourses();
+        ArrayList<Course> registeredCourses = model.getRegisteredCourses();
+        
+        for(int i = 0; i < registeredCourses.size(); i++)
+        {
+            if(registeredCourses.get(i).getCode().equals(code))
+              return  registeredCourses.get(i).getUnits();
+        }
+        return null;
+    }
+
+    public Student getLogInStudent()
+    {
+        return this.loginedStudent;
+    }
+
+    public void viewEafView()
+    {
+        mf.switchView(new ViewEAFView(this));
+    }
+
+    public String convertDayToShortcut(String day)
+    {
+        if(day.equals("Monday - Wednesday"))
+            return "MW";
+        else
+            return "TH";
     }
     
 }

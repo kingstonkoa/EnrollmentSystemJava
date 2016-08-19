@@ -10,12 +10,13 @@ import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
-public class RemoveEnlistmentView extends JPanel implements EnrollmentSystemView
+public class EnrollStudentView extends JPanel implements EnrollmentSystemView
 {
-        private JButton btnRemove;
+        private JButton btnEnroll;
         private JButton backBtn;
         private JList jlEnlisted;
 	private Font fntPlainText, fntHeaderText;
@@ -23,7 +24,7 @@ public class RemoveEnlistmentView extends JPanel implements EnrollmentSystemView
         private DefaultListModel listModel;
         
 
-	public RemoveEnlistmentView(StudentController controller)
+	public EnrollStudentView(StudentController controller)
 	{
                 this.controller = controller;
 		setBounds(0, 0, 1000, 620);
@@ -45,9 +46,10 @@ public class RemoveEnlistmentView extends JPanel implements EnrollmentSystemView
         }
 
         //construct components
-        btnRemove = new JButton ("Remove ");
-        btnRemove.setFont(fntPlainText);
+        btnEnroll = new JButton ("Enroll ");
+        btnEnroll.setFont(fntPlainText);
         jlEnlisted = new JList (listModel);
+        jlEnlisted.setEnabled(false);
         backBtn = new JButton ("Back");
         backBtn.setFont(fntPlainText);
 
@@ -56,12 +58,12 @@ public class RemoveEnlistmentView extends JPanel implements EnrollmentSystemView
         setLayout (null);
 
         //add components
-        add (btnRemove);
+        add (btnEnroll);
         add (jlEnlisted);
         add (backBtn);
 
         //set component bounds (only needed by Absolute Positioning)
-        btnRemove.setBounds (365, 490, 210, 30);
+        btnEnroll.setBounds (365, 490, 210, 30);
         jlEnlisted.setBounds (365, 20, 210, 435);
         backBtn.setBounds (5, 5, 100, 25);
         
@@ -72,13 +74,19 @@ public class RemoveEnlistmentView extends JPanel implements EnrollmentSystemView
         } 
       } ); 
                 
-        btnRemove.addActionListener(new ActionListener() { 
+        btnEnroll.addActionListener(new ActionListener() { 
         @Override
         public void actionPerformed(ActionEvent e) {
-            String sectionRemoved = jlEnlisted.getSelectedValue().toString();
-            listModel.remove(jlEnlisted.getSelectedIndex());
-            String[] splited = sectionRemoved.split("\\s+");
-            controller.removeEnlisted(splited[0], splited[1]);
+            if(controller.isValidUnits())
+            {
+                controller.enrollStudent();
+                controller.updateSectionEnrollCount();
+            }
+            else
+                {
+                    JOptionPane.showMessageDialog(null,
+                    "Minimum or Maximum units is not valid");
+                }
         } 
       } );
 

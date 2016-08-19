@@ -34,8 +34,10 @@ public class OpenSectionView extends JPanel implements EnrollmentSystemView
     private JLabel codeLbl;
     private JLabel sectionlbl;
     private JLabel capacitylbl;
+    private JLabel facultylbl;
     private JTextField sectiontf;
     private JTextField capacitytf;
+    private JTextField facultytf;
     private JButton openBtn;
     private JButton backBtn;
     private JComboBox courseCBox;
@@ -72,6 +74,8 @@ public class OpenSectionView extends JPanel implements EnrollmentSystemView
         sectionlbl.setFont(fntPlainText);
         capacitylbl = new JLabel ("Capacity");
         capacitylbl.setFont(fntPlainText);
+        facultylbl = new JLabel("Faculty");
+        facultylbl.setFont(fntPlainText);
         sectiontf = new JTextField (3);
         capacitytf = new JTextField (5);
         openBtn = new JButton ("Open");
@@ -84,6 +88,7 @@ public class OpenSectionView extends JPanel implements EnrollmentSystemView
         dayCBox = new JComboBox (dayCBoxItems);
         startlbl = new JLabel ("Start Time");
         startlbl.setFont(fntPlainText);
+        facultytf = new JTextField (50);
         startMtf = new JTextField (5);
         colonSlbl = new JLabel (":");
         startHtf = new JTextField (5);
@@ -101,9 +106,11 @@ public class OpenSectionView extends JPanel implements EnrollmentSystemView
         add (openCourselbl);
         add (codeLbl);
         add (sectionlbl);
+        add (facultylbl);
         add (capacitylbl);
         add (sectiontf);
         add (capacitytf);
+        add (facultytf);
         add (openBtn);
         add (backBtn);
         add (courseCBox);
@@ -123,20 +130,22 @@ public class OpenSectionView extends JPanel implements EnrollmentSystemView
         codeLbl.setBounds (370, 125, 140, 25);
         sectionlbl.setBounds (370, 170, 140, 25);
         capacitylbl.setBounds (370, 215, 140, 25);
+        facultylbl.setBounds (370, 260, 140, 25);
         sectiontf.setBounds (505, 170, 100, 25);
+        facultytf.setBounds (505, 260, 100, 25);
         capacitytf.setBounds (505, 215, 100, 25);
         openBtn.setBounds (435, 440, 100, 25);
         courseCBox.setBounds (505, 125, 100, 25);
-        daylbl.setBounds (370, 260, 140, 25);
-        dayCBox.setBounds (505, 260, 165, 30);
-        startlbl.setBounds (370, 305, 140, 25);
-        startMtf.setBounds (560, 305, 45, 30);
-        colonSlbl.setBounds (552, 305, 15, 30);
-        startHtf.setBounds (505, 305, 45, 30);
-        jcomp16.setBounds (370, 350, 140, 25);
-        endHtf.setBounds (505, 350, 45, 30);
-        endMtf.setBounds (560, 350, 45, 30);
-        colonElbl.setBounds (552, 350, 20, 25);
+        daylbl.setBounds (370, 305, 140, 25);
+        dayCBox.setBounds (505, 305, 165, 30);
+        startlbl.setBounds (370, 350, 140, 25);
+        startMtf.setBounds (560, 350, 45, 30);
+        colonSlbl.setBounds (552, 350, 15, 30);
+        startHtf.setBounds (505, 350, 45, 30);
+        jcomp16.setBounds (370, 395, 140, 25);
+        endHtf.setBounds (505, 395, 45, 30);
+        endMtf.setBounds (560, 395, 45, 30);
+        colonElbl.setBounds (552, 395, 20, 25);
         backBtn.setBounds (5, 5, 100, 25);
         
         backBtn.addActionListener(new ActionListener() { 
@@ -149,7 +158,7 @@ public class OpenSectionView extends JPanel implements EnrollmentSystemView
         @Override
         public void actionPerformed(ActionEvent e) {
             if (!courseCBox.getSelectedItem().toString().equals("") && !sectiontf.getText().equals("") && !capacitytf.getText().equals("") && !startHtf.getText().equals("")
-                    && !startMtf.getText().equals("") && !endHtf.getText().equals("") && !endMtf.getText().equals(""))
+                    && !startMtf.getText().equals("") && !endHtf.getText().equals("") && !endMtf.getText().equals("") && !facultytf.getText().equals(""))
             {
                 if(sectiontf.getText().length() == 3)
                 {
@@ -164,7 +173,7 @@ public class OpenSectionView extends JPanel implements EnrollmentSystemView
                             {
                                 if(controller.SectionNotExist(courseCBox.getSelectedItem().toString(),sectiontf.getText()))
                                 {
-                                    controller.openSection(new Section(courseCBox.getSelectedItem().toString(), sectiontf.getText(), capacitytf.getText(), dayCBox.getSelectedItem().toString(), startHtf.getText(), startMtf.getText(), endHtf.getText(), endMtf.getText(), "0"));
+                                    controller.openSection(new Section(courseCBox.getSelectedItem().toString(), sectiontf.getText(), capacitytf.getText(), dayCBox.getSelectedItem().toString(), startHtf.getText(), startMtf.getText(), endHtf.getText(), endMtf.getText(), "0", facultytf.getText()));
                                 } else
                                     {
                                       JOptionPane.showMessageDialog(null,"Section already exist for this course");  

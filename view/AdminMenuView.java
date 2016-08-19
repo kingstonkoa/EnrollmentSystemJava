@@ -17,6 +17,7 @@ public class AdminMenuView extends JPanel implements EnrollmentSystemView
         private JButton btnEditAccount;
         private JButton btnAddCourse;
         private JButton btnOpenSection;
+        private JButton btnViewClassList;
         private JLabel lblWelcome;
 	private Font fntPlainText, fntHeaderText;
         private final AdminController controller;
@@ -42,6 +43,8 @@ public class AdminMenuView extends JPanel implements EnrollmentSystemView
                 btnOpenSection.setFont(fntPlainText);
                 lblWelcome = new JLabel ("Welcome Admin");
                 lblWelcome.setFont(fntHeaderText);
+                btnViewClassList = new JButton ("View Class List");
+                btnViewClassList.setFont(fntPlainText);
 
                 //adjust size and set layout
                 setPreferredSize (new Dimension (908, 537));
@@ -53,12 +56,14 @@ public class AdminMenuView extends JPanel implements EnrollmentSystemView
                 add (btnAddCourse);
                 add (btnOpenSection);
                 add (lblWelcome);
+                add (btnViewClassList);
 
                 //set component bounds (only needed by Absolute Positioning)
                 btnRegister.setBounds (390, 110, 230, 55);
                 btnEditAccount.setBounds (390, 190, 230, 55);
                 btnAddCourse.setBounds (390, 280, 230, 55);
                 btnOpenSection.setBounds (390, 365, 230, 55);
+                btnViewClassList.setBounds (390, 450, 230, 55);
                 lblWelcome.setBounds (350, 40, 350, 50);
                 
                 btnRegister.addActionListener(new ActionListener() { 
@@ -87,7 +92,13 @@ public class AdminMenuView extends JPanel implements EnrollmentSystemView
                 public void actionPerformed(ActionEvent e) { 
                     controller.loadOpenSectionView();
                 } 
-              } );                
+              } ); 
+                btnViewClassList.addActionListener(new ActionListener() { 
+                @Override
+                public void actionPerformed(ActionEvent e) { 
+                    controller.loadViewClassListView();
+                } 
+              } ); 
 	}
         
 }

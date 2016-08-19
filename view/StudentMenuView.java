@@ -70,24 +70,53 @@ public class StudentMenuView extends JPanel implements EnrollmentSystemView
                         controller.loadEnlistmentView();
                     
                     }
+                    else
+                        {
+                            JOptionPane.showMessageDialog(null,
+                            "You are already enrolled");
+                        }
                 } 
               } );
                 btnRemoveEnlist.addActionListener(new ActionListener() { 
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                      controller.removeEnlistmentView(); 
+                    if(controller.isNotEnrolled())
+                    {
+                      controller.removeEnlistmentView();
+                    }
+                    else
+                        {
+                            JOptionPane.showMessageDialog(null,
+                            "You are already enrolled");
+                        }
                 } 
               } );                
                 btnEnroll.addActionListener(new ActionListener() { 
                 @Override
                 public void actionPerformed(ActionEvent e) { 
-                    
+                    if(controller.isNotEnrolled())
+                    {
+                      controller.enrollView();
+                    }
+                    else
+                        {
+                            JOptionPane.showMessageDialog(null,
+                            "You are already enrolled");
+                        }
                 } 
               } );
                 btnViewEAF.addActionListener(new ActionListener() { 
                 @Override
                 public void actionPerformed(ActionEvent e) { 
-                    
+                    if(!controller.isNotEnrolled())
+                    {
+                      controller.viewEafView();
+                    }
+                    else
+                        {
+                            JOptionPane.showMessageDialog(null,
+                            "You must enroll to view EAF");
+                        }                    
                 } 
               } );                
 	}

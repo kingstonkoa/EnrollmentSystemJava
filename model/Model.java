@@ -24,6 +24,7 @@ public class Model
     private ArrayList<Course> registeredCoursesList;
     private ArrayList<Section> openedSectionList;
     private ArrayList<Section> enlistedSectionList;
+    private ArrayList<Section> enrolledSectionList;
     private ReadStudentFromFile r;
     private ReadCourseFromFile c;
     private ReadSectionFromFile s;
@@ -81,6 +82,17 @@ public class Model
    public ArrayList<Section> getEnlistedSections()
    {
        return this.enlistedSectionList;
+   }
+
+    public void readEnrolled(String filename)
+    {
+        e.readFile(filename);
+        enrolledSectionList = e.getEnlistedSections();
+    }
+    
+    public ArrayList<Section> getEnrolledSections()
+   {
+       return this.enrolledSectionList;
    }
     
 }
